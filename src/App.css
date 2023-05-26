@@ -1,38 +1,85 @@
-.App {
+* {
+  margin: 0px;
+}
+
+.app {
+  background-color: #fafafa;
+}
+
+.app__signup {
+  display: flex;
+  flex-direction: column;
+}
+
+.app__posts {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.app__postsRight {
+  margin-left: 20px;
+  flex: 0.4;
+}
+.app__postsLeft {
+  flex: 0.6;
+}
+
+.app__signInDisplay {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.post__commentBox {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin-top: 10px;
 }
 
-.App-link {
-  color: #61dafb;
+.post__input {
+  flex: 1;
+  border: none;
+  padding: 20px;
+  border-top: 1px solid lightgray;
+}
+.post__button {
+  flex: 0;
+  border: none;
+  border-top: 1px solid lightgray;
+  color: #6082a3;
+  background-color: transparent;
+}
+.post__comments {
+  padding: 20px;
+}
+.app__signInSignUpButtton {
+  text-align: end;
+  position: fixed;
+  top: 20px;
+  right: 10px;
+  z-index: 20;
+}
+.app__signInSignUpButtton > button {
+  color: black;
+  border: 1px solid lightgray;
+  background-color: white;
+  z-index: 10;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
+.app__logOutMsg {
+  text-align: center;
+}
+.app__logInMsg {
+  text-align: center;
+}
+
+#hideMeAfter5Seconds {
+  animation: hideAnimation 0s ease-in 5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hideAnimation {
   to {
-    transform: rotate(360deg);
+    visibility: hidden;
+    width: 0;
+    height: 0;
   }
 }
