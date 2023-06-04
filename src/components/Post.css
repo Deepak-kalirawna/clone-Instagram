@@ -2,12 +2,22 @@
   max-width: 500px;
   background-color: white;
   border: 1px solid lightgray;
+  border-radius: 20px;
   margin-bottom: 45px;
 }
-
+.post:hover {
+  box-shadow: 3px 3px 3px 5px lightslategrey;
+}
+.post__commentBox {
+  border-radius: 0px 0px 20px 20px;
+}
+.post__input {
+  border-radius: 0px 0px 0px 20px;
+}
 .post__image {
   width: 100%;
-  object-fit: contain;
+  max-height: 320px;
+  /* object-fit: contain; */
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
 }
@@ -23,4 +33,10 @@
 
 .post__avatar {
   margin-right: 10px;
+}
+.post__button:hover {
+  color: white;
+  border-radius: 0px 0px 20px 0px;
+  cursor: pointer;
+  background-color: lightskyblue;
 }

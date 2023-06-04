@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import InstagramLogo from "./assets/insta-logo.png";
 import ImageUpload from "./UI/ImageUpload";
 import Post from "./components/Post";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { auth, db } from "./firebase";
 import { onSnapshot, collection } from "firebase/firestore";
 import Modal from "@mui/material/Modal";
@@ -30,7 +30,8 @@ const style = {
 };
 
 function App() {
-  const collectionRef = collection(db, "posts");
+  console.log("APP Loading");
+  // const collectionRef = collection(db, "posts");
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
   const [username, setUsername] = useState("");
@@ -39,7 +40,11 @@ function App() {
   const [user, setUser] = useState(null);
   const [openSignIn, setOpenSignIn] = useState(false);
 
+  const collectionRef = useMemo(() => {
+    return collection(db, "posts");
+  }, []);
   useEffect(() => {
+    console.log("first");
     const unSubscribe = onAuthStateChanged(auth, (authuser) => {
       if (authuser) {
         //user has logged in
@@ -55,6 +60,7 @@ function App() {
   }, [user]);
 
   useEffect(() => {
+    console.log("second");
     const unsub = onSnapshot(collectionRef, (querySnapshort) => {
       const postItems = [];
       querySnapshort.forEach((doc) => {
@@ -68,11 +74,31 @@ function App() {
     };
   }, [collectionRef]);
 
+  // const signupHandler = (e) => {
+  //   e.preventDefault();
+  //   createUserWithEmailAndPassword(auth, email, password)
+  //     .then((authUser) => {
+  //       return updateProfile(authUser.user, { displayName: username });
+  //     })
+  //     .catch((error) => alert(error.message));
+  //   setOpen(false);
+  //   setEmail("");
+  //   setPassword("");
+  //   setUsername("");
+  // };
   const signupHandler = (e) => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then((authUser) => {
-        return updateProfile(authUser.user, { displayName: username });
+        return updateProfile(authUser.user, {
+          displayName: username,
+        }).then(() => {
+          // Set the current user with displayName in the state
+          setUser({
+            ...authUser.user,
+            displayName: username,
+          });
+        });
       })
       .catch((error) => alert(error.message));
     setOpen(false);
@@ -105,23 +131,28 @@ function App() {
             </center>
             <Input
               type="text"
-              placeholder="username"
+              placeholder="UserName"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             ></Input>
             <Input
               type="text"
-              placeholder="email"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             ></Input>
             <Input
               type="text"
-              placeholder="password"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             ></Input>
-            <Button type="submit" onClick={signupHandler}>
+            <Button
+              className="btns"
+              type="submit"
+              onClick={signupHandler}
+              variant="contained"
+            >
               Sign Up
             </Button>
           </form>
@@ -139,17 +170,22 @@ function App() {
             </center>
             <Input
               type="text"
-              placeholder="email"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             ></Input>
             <Input
               type="text"
-              placeholder="password"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             ></Input>
-            <Button type="submit" onClick={signinHandler}>
+            <Button
+              className="btns"
+              type="submit"
+              onClick={signinHandler}
+              variant="contained"
+            >
               Sign In
             </Button>
           </form>
@@ -159,6 +195,7 @@ function App() {
       {user ? (
         <div className="app__signInSignUpButtton">
           <Button
+            variant="contained"
             onClick={() => signOut(auth).catch((err) => alert(err.message))}
           >
             LogOut
@@ -166,8 +203,12 @@ function App() {
         </div>
       ) : (
         <div className="app__signInSignUpButtton">
-          <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
-          <Button onClick={() => setOpen(true)}>Sign Up</Button>
+          <Button variant="contained" onClick={() => setOpenSignIn(true)}>
+            Sign In
+          </Button>
+          <Button variant="contained" onClick={() => setOpen(true)}>
+            Sign Up
+          </Button>
         </div>
       )}
       {user ? (
@@ -191,11 +232,11 @@ function App() {
           ))}
         </div>
         <div className="app__postsRight">
-          {user?.displayName ? (
+          {user ? (
             <ImageUpload username={user.displayName} />
           ) : (
             <h2 className="app__signInDisplay">
-              Please Sign In to Upload Posts ...
+              Please Sign In or Sign Up to Upload Posts and Comment.
             </h2>
           )}
         </div>

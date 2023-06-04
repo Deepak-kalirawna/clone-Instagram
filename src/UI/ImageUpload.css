@@ -1,7 +1,7 @@
 .imageUpload {
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 10px;
@@ -10,9 +10,11 @@
 
 .imageUpload__progress {
   width: 100%;
+  height: 25px;
+  margin-bottom: 10px;
 }
 
-.imageUploader__button {
+/* .imageUploader__button {
   padding: 8px 14px;
   outline: none;
   cursor: pointer;
@@ -25,13 +27,13 @@
   vertical-align: middle;
   background-color: #fff;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.05);
-}
-.imageUploader__button:hover {
-  background-color: lightgray;
-  color: black;
+} */
+.imageUploader__button {
+  cursor: pointer;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.05);
 }
 
-.imageUpload > input {
+/* .imageUpload > input {
   padding: 8px 14px;
   outline: none;
   text-decoration: none;
@@ -44,9 +46,11 @@
   vertical-align: middle;
   background-color: #fff;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.05);
-}
-.imageUpload__fileInput {
+} */
+/* .imageUpload__fileInput {
   padding: 5px 11px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   outline: none;
   text-decoration: none;
   text-align: center;
@@ -58,17 +62,21 @@
   vertical-align: middle;
   background-color: #fff;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.05);
+} */
+.imageUpload__fileInput {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-.inputfile {
+/* .inputfile {
   width: 0.1px;
   height: 0.1px;
   opacity: 0;
   overflow: hidden;
   position: absolute;
   z-index: -1;
-}
-.inputfile + label {
+} */
+/* .inputfile + label {
   font-size: 1.25em;
   font-weight: 700;
   padding: 5px;
@@ -80,4 +88,4 @@
 .inputfile:focus + label,
 .inputfile + label:hover {
   background-color: red;
-}
+} */

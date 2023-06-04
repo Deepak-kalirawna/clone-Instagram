@@ -11,7 +11,7 @@ import { db } from "../firebase";
 function Post({ postId, username, caption, image, user }) {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
-
+  console.log("loadced");
   useEffect(() => {
     let unSubscribe;
     if (postId) {
@@ -25,9 +25,9 @@ function Post({ postId, username, caption, image, user }) {
       });
     }
     return () => {
-      unSubscribe();
+      // unSubscribe();
     };
-  }, [postId]);
+  }, []);
   const postComment = (e) => {
     e.preventDefault();
     let collectionRef = collection(db, "posts", postId, "comments");

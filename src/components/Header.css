@@ -8,8 +8,5 @@
   border-bottom: 1px solid lightgray;
   display: flex;
   justify-content: space-between;
-}
-
-.app__headerAvatar {
-  margin-right: 150px;
+  box-shadow: 3px 3px 3px lightslategrey;
 }

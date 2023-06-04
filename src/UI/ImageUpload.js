@@ -1,9 +1,9 @@
-import { Button } from "@mui/base";
 import "./ImageUpload.css";
 import React, { useState } from "react";
 import { db, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { Button, Input, TextField } from "@mui/material";
 
 function ImageUpload(props) {
   const [image, setImage] = useState(null);
@@ -54,24 +54,35 @@ function ImageUpload(props) {
   return (
     <div className="imageUpload">
       <progress className="imageUpload__progress" value={progres} max="100" />
-      <input
+      {/* <input
         type="text"
         placeholder="Enter a caption..."
         value={caption}
         onChange={(event) => setCaption(event.target.value)}
+      /> */}
+      <TextField
+        label="Caption"
+        helperText={caption.trim() == "" ? "Enter a caption for Post" : ""}
+        value={caption}
+        onChange={(event) => setCaption(event.target.value)}
       />
       <div className="imageUpload__fileInput">
-        <input
+        <Input
           type="file"
           name="file"
           id="file"
           className="inputfile"
           onChange={handlerChange}
         />
-        <label for="file">Choose a file</label>
       </div>
-
-      <Button className="imageUploader__button" onClick={handleUpload}>
+      <Button
+        className="imageUploader__button"
+        variant="contained"
+        color="success"
+        onClick={handleUpload}
+        disabled={caption.trim() != "" && image ? false : true}
+      >
+        {" "}
         Upload
       </Button>
     </div>

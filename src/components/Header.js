@@ -10,7 +10,12 @@ function Header({ username }) {
         src={InstagramLogo}
         alt="instagram-logo"
       />
-      <Avatar className="app__headerAvatar" alt={username} src="image" />
+      <Avatar
+        className="app__headerAvatar"
+        alt={username}
+        src="image"
+        sx={{ bgcolor: "#EE7600" }}
+      />
     </div>
   );
 }
