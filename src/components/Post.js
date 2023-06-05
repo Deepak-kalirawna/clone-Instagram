@@ -6,28 +6,51 @@ import {
   collection,
   onSnapshot,
   serverTimestamp,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../firebase";
 function Post({ postId, username, caption, image, user }) {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   console.log("loadced");
+  // useEffect(() => {
+  //   let unSubscribe;
+  //   if (postId) {
+  //     let collectionRef = collection(db, "posts", postId, "comments");
+  //     unSubscribe = onSnapshot(collectionRef, (querySnapshort) => {
+  //       let items = [];
+  //       querySnapshort.forEach((doc) => {
+  //         items.push(doc.data());
+  //       });
+  //       setComments(items);
+  //     });
+  //   }
+  //   return () => {
+  //     // unSubscribe();
+  //   };
+  // }, []);
   useEffect(() => {
-    let unSubscribe;
+    let unsubscribe;
     if (postId) {
-      let collectionRef = collection(db, "posts", postId, "comments");
-      unSubscribe = onSnapshot(collectionRef, (querySnapshort) => {
-        let items = [];
-        querySnapshort.forEach((doc) => {
+      const collectionRef = collection(db, "posts", postId, "comments");
+      const commentsQuery = query(collectionRef, orderBy("timestamp", "desc"));
+
+      unsubscribe = onSnapshot(commentsQuery, (querySnapshot) => {
+        const items = [];
+        querySnapshot.forEach((doc) => {
           items.push(doc.data());
         });
         setComments(items);
       });
     }
+
     return () => {
-      // unSubscribe();
+      if (unsubscribe) {
+        unsubscribe();
+      }
     };
-  }, []);
+  }, [postId]);
   const postComment = (e) => {
     e.preventDefault();
     let collectionRef = collection(db, "posts", postId, "comments");

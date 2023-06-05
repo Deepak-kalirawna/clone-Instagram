@@ -5,7 +5,7 @@ import ImageUpload from "./UI/ImageUpload";
 import Post from "./components/Post";
 import { useEffect, useMemo, useState } from "react";
 import { auth, db } from "./firebase";
-import { onSnapshot, collection } from "firebase/firestore";
+import { onSnapshot, collection, query, orderBy } from "firebase/firestore";
 import Modal from "@mui/material/Modal";
 import { Button, Input, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -22,7 +22,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 500,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -63,7 +63,8 @@ function App() {
 
   useEffect(() => {
     console.log("second");
-    const unsub = onSnapshot(collectionRef, (querySnapshort) => {
+    const postsQuery = query(collectionRef, orderBy("timestamp", "desc"));
+    const unsub = onSnapshot(postsQuery, (querySnapshort) => {
       const postItems = [];
       querySnapshort.forEach((doc) => {
         postItems.push({ id: doc.id, post: doc.data() });

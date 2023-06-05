@@ -9,6 +9,7 @@ function ImageUpload(props) {
   const [image, setImage] = useState(null);
   const [progres, setProgress] = useState(0);
   const [caption, setCaption] = useState("");
+  const [error, setError] = useState(false);
   const collectionRef = collection(db, "posts");
 
   const handlerChange = (e) => {
@@ -33,7 +34,10 @@ function ImageUpload(props) {
       },
       (error) => {
         console.log(error.message);
-        alert(error.message);
+        // alert(error.message);
+        if (error) {
+          setError(true);
+        }
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -75,6 +79,7 @@ function ImageUpload(props) {
           onChange={handlerChange}
         />
       </div>
+      {error ? "Something went wrong! Please try again..." : ""}
       <Button
         className="imageUploader__button"
         variant="contained"
