@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { auth, db } from "./firebase";
 import { onSnapshot, collection } from "firebase/firestore";
 import Modal from "@mui/material/Modal";
-import { Button, Input } from "@mui/material";
+import { Button, Input, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import {
   createUserWithEmailAndPassword,
@@ -39,6 +39,8 @@ function App() {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [openSignIn, setOpenSignIn] = useState(false);
+  const [signInError, setSignInError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const collectionRef = useMemo(() => {
     return collection(db, "posts");
@@ -88,38 +90,77 @@ function App() {
   // };
   const signupHandler = (e) => {
     e.preventDefault();
+    setLoading(true);
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((authUser) => {
         return updateProfile(authUser.user, {
           displayName: username,
         }).then(() => {
           // Set the current user with displayName in the state
+          setLoading(false);
+          setOpen(false);
+          setEmail("");
+          setPassword("");
+          setUsername("");
           setUser({
             ...authUser.user,
             displayName: username,
           });
         });
       })
-      .catch((error) => alert(error.message));
-    setOpen(false);
-    setEmail("");
-    setPassword("");
-    setUsername("");
+      .catch((error) => {
+        // alert(error.message)
+        if (error) {
+          console.log("error");
+          setSignInError(true);
+          setLoading(false);
+        }
+      });
+    // setOpen(false);
+    // setEmail("");
+    // setPassword("");
+    // setUsername("");
   };
 
   const signinHandler = (e) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password).catch((err) =>
-      alert(err.messgae)
-    );
+    setLoading(true);
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        setOpenSignIn(false);
+        setSignInError(false);
+        setEmail("");
+        setPassword("");
+        setLoading(false);
+      })
+      .catch((err) => {
+        // alert(err.messgae);
+        if (err) {
+          console.log("error");
+          setSignInError(true);
+          setLoading(false);
+        }
+      });
+  };
+  const handleSignInOverlayClick = () => {
     setOpenSignIn(false);
+    setSignInError(false);
     setEmail("");
     setPassword("");
+
+    setOpen(false);
+    setUsername("");
   };
 
   return (
     <div className="app">
-      <Modal open={open} onClose={() => setOpen(false)}>
+      <Modal
+        onBackdropClick={handleSignInOverlayClick}
+        open={open}
+        onClose={() => setOpen(false)}
+      >
         <Box sx={style}>
           <form className="app__signup">
             <center>
@@ -129,36 +170,78 @@ function App() {
                 alt="instagram-logo"
               />
             </center>
-            <Input
+            <TextField
               type="text"
-              placeholder="UserName"
+              label="UserName"
+              sx={{
+                marginBottom: "20px",
+                marginTop: "25px",
+              }}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-            ></Input>
-            <Input
+            />
+            <TextField
               type="text"
-              placeholder="Email"
+              label="Email"
+              helperText="The email should follow the standard format (e.g.example@example.com)"
+              sx={{
+                marginBottom: "20px",
+                marginTop: "20px",
+              }}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-            ></Input>
-            <Input
-              type="text"
-              placeholder="Password"
+            />
+            <TextField
+              type="password"
+              label="Password"
+              helperText="Enter atleast 6 Characters"
+              sx={{
+                marginBottom: "20px",
+                marginTop: "20px",
+              }}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-            ></Input>
+            />
+            {signInError ? (
+              <div className="errorMsg">
+                Please Enter Valid Email and Password
+              </div>
+            ) : (
+              ""
+            )}
+            {loading ? (
+              <div className="loading" id="hideMeAfter1Seconds">
+                Please Wait !!!
+              </div>
+            ) : (
+              ""
+            )}
             <Button
               className="btns"
               type="submit"
               onClick={signupHandler}
               variant="contained"
+              disabled={
+                email.trim() === "" ||
+                password.trim() === "" ||
+                loading ||
+                username.trim() === ""
+                  ? true
+                  : false
+              }
             >
-              Sign Up
+              {loading ? "Signing up..." : "Sign Up"}
             </Button>
           </form>
         </Box>
       </Modal>
-      <Modal open={openSignIn} onClose={() => setOpenSignIn(false)}>
+      <Modal
+        onBackdropClick={handleSignInOverlayClick}
+        open={openSignIn}
+        onClose={() => {
+          setOpenSignIn(false);
+        }}
+      >
         <Box sx={style}>
           <form className="app__signup">
             <center>
@@ -168,25 +251,52 @@ function App() {
                 alt="instagram-logo"
               />
             </center>
-            <Input
+            <TextField
               type="text"
-              placeholder="Email"
+              label="Email"
+              sx={{
+                marginBottom: "20px",
+                marginTop: "25px",
+              }}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-            ></Input>
-            <Input
-              type="text"
-              placeholder="Password"
+            />
+            <TextField
+              type="password"
+              sx={{
+                marginBottom: "20px",
+                marginTop: "20px",
+              }}
+              label="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-            ></Input>
+            />
+            {signInError ? (
+              <div className="errorMsg">
+                Please Enter Valid Email and Password
+              </div>
+            ) : (
+              ""
+            )}
+            {loading ? (
+              <div className="loading" id="hideMeAfter1Seconds">
+                Please Wait !!!
+              </div>
+            ) : (
+              ""
+            )}
             <Button
               className="btns"
               type="submit"
               onClick={signinHandler}
+              disabled={
+                email.trim() === "" || password.trim() === "" || loading
+                  ? true
+                  : false
+              }
               variant="contained"
             >
-              Sign In
+              {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
         </Box>

@@ -3,12 +3,17 @@
 }
 
 .app {
-  background-color: #f7f8fe;
+  background-color: rgb(245, 246, 247);
 }
 
 .app__signup {
   display: flex;
   flex-direction: column;
+}
+
+.errorMsg {
+  color: red;
+  margin-bottom: 20px;
 }
 
 .app__posts {
@@ -54,7 +59,7 @@
   text-align: end;
   position: fixed;
   top: 20px;
-  right: 70px;
+  right: 80px;
   z-index: 20;
 }
 .app__signInSignUpButtton > button {
