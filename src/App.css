@@ -87,6 +87,11 @@
   margin-top: 20px !important;
 }
 
+@media (max-width: 500px) {
+  .app__signInDisplay {
+    font-size: 15px;
+  }
+}
 @keyframes hideAnimation {
   to {
     visibility: hidden;
