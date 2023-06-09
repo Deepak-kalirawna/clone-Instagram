@@ -17,7 +17,7 @@
 .post__image {
   width: 100%;
   max-height: 320px;
-  /* object-fit: contain; */
+  object-fit: contain;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
 }
@@ -39,4 +39,34 @@
   border-radius: 0px 0px 20px 0px;
   cursor: pointer;
   background-color: lightskyblue;
+}
+
+@media (max-width: 550px) {
+  .post__header {
+    display: flex;
+    align-items: center;
+    padding: 7px;
+  }
+  .post__header > h3 {
+    font-size: 12px;
+  }
+  .post__text {
+    font-weight: normal;
+    padding: 10px;
+    font-size: 12px;
+  }
+  .post__comments {
+    padding: 10px;
+    font-size: 12px;
+  }
+  .post__commentBox > input {
+    padding: 10px;
+  }
+  .post__image {
+    width: 100%;
+    max-height: 150px;
+    object-fit: contain;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+  }
 }
