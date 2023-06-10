@@ -162,7 +162,7 @@ function App() {
         open={open}
         onClose={() => setOpen(false)}
       >
-        <Box sx={style}>
+        <Box sx={style} className="app__signupModal">
           <form className="app__signup">
             <center>
               <img
@@ -243,7 +243,7 @@ function App() {
           setOpenSignIn(false);
         }}
       >
-        <Box sx={style}>
+        <Box sx={style} className="app__signupModal">
           <form className="app__signup">
             <center>
               <img

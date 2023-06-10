@@ -11,8 +11,18 @@
   box-shadow: 1px 1px 1px lightslategrey;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
   .app__headerImage {
     width: 80px;
+  }
+  .app__headerAvatar {
+    width: 25px !important;
+    height: 25px !important;
+  }
+}
+
+@media (max-width: 330px) {
+  .app__headerImage {
+    display: none;
   }
 }
